@@ -23,6 +23,7 @@ storage.fetchOne = function fetchOne(schema, id) {
   if (!schema) return Promise.reject(new Error('Expected schema name.'));
   if (!id) return Promise.reject(new Error('Expected ID.'));
 
+
   return fs.readFileProm(`${__dirname}/../data/${schema}/${id}.json`)
     .then((data) => {
       try {
@@ -38,9 +39,15 @@ storage.fetchOne = function fetchOne(schema, id) {
 };
 
 
-storage.fetchAll = function fetchAll() {
+// storage.fetchAll = function fetchAll(schema) {
+//   return fs.readdirProm('needs some argument in here, read docs')
+//     .then((something) => {
+//       // do logic on 'something'
+//     }).catch((err) => {
+//       // logic with error
+//     });
+// };
 
-};
 
 storage.update = function update() {
 

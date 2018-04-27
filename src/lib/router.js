@@ -4,6 +4,7 @@ const logger = require('./logger');
 const bodyParser = require('./body-parser');
 const urlParser = require('./url-parser');
 
+// This is a baby version of what Express does.
 const Router = module.exports = function router() {
   this.routes = {
     GET: {},

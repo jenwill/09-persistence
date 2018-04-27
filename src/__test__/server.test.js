@@ -14,6 +14,7 @@ afterAll(() => server.stop());
 
 describe('VALID request to the API', () => {
   describe('POST /api/v1/bird', () => {
+    // superagent.post() is a promise
     it('should respond with status 201 and created a new bird', () => superagent.post(`:${testPort}/api/v1/bird`)
       .send(mockResource)
       .then((res) => {
