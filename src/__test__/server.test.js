@@ -5,7 +5,7 @@ const superagent = require('superagent');
 
 const testPort = 5000;
 const mockResource = { name: 'Hummingbird', type: 'Tiny Tiny', info: 'Cute but mean.' };
-// let mockId = null;
+let mockId = null;
 
 beforeAll(() => server.start(testPort));
 afterAll(() => server.stop());
@@ -14,33 +14,26 @@ afterAll(() => server.stop());
 
 describe('VALID request to the API', () => {
   describe('POST /api/v1/bird', () => {
-    it('should respond with status 201 and created a new bird', () => {
-      return superagent.post(`:${testPort}/api/v1/bird`)
-        .send(mockResource)
-        .then((res) => {
-          expect(res.body.name).toEqual(mockResource.name);
-          expect(res.body.type).toEqual(mockResource.type);
-          expect(res.body.info).toEqual(mockResource.info);
-          expect(res.status).toEqual(201);
-        });
-      // if testing for errors, test them in a .catch block
-    });
+    it('should respond with status 201 and created a new bird', () => superagent.post(`:${testPort}/api/v1/bird`)
+      .send(mockResource)
+      .then((res) => {
+        mockId = res.body.id;
+        expect(res.body.name).toEqual(mockResource.name);
+        expect(res.body.type).toEqual(mockResource.type);
+        expect(res.body.info).toEqual(mockResource.info);
+        expect(res.status).toEqual(201);
+      }));
   });
-  describe('GET /api/v1/bird?id', () => {
-    it('should respond with status 200', () => {
-      return superagent.post(`:${testPort}/api/v1/bird`)
-        .send(mockResource);
-      // .then((res) => {
-      // mockId = res.body.id;
-      // why do we need to reassign this?
-      // Because the id is created when the item is created.
-      // It won't have a value we can use until we send the POST request
-      // and receive the response.
-      // expect(res.body.name).toEqual(mockResource.name);
-      // expect(res.body.type).toEqual(mockResource.type);
-      // expect(res.body.info).toEqual(mockResource.info);
-      // expect(res.status).toEqual(200);
-      // });
-    });
+
+  describe('GET /api/v1/bird?id=ID', () => {
+    it('should respond with the previously created bird.', () => superagent.get(`:${testPort}/api/v1/bird?id=${mockId}`)
+      .then((res) => {
+        console.log(res.body, 'RES.BODY IN GET BLOCK .THEN');
+        expect(res.body.id).toEqual(mockId);
+        //  expect(res.body.name).toEqual(mockResource.name);
+        //  expect(res.body.type).toEqual(mockResource.type);
+        //  expect(res.body.info).toEqual(mockResource.info);
+        //  expect(res.status).toEqual(200);
+      }));
   });
 });
