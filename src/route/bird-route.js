@@ -12,17 +12,11 @@ module.exports = function routeBird(router) {
       storage.create('Bird', newBird)
         .then((bird) => {
           response.sendJSON(res, 201, bird);
-          // res.writeHead(201, { 'Content-Type': 'application/json' });
-          // res.write(JSON.stringify(bird));
-          // res.end();
           return undefined;
         });
     } catch (err) {
       logger.log(logger.ERROR, `BIRD-ROUTE: There was a bad request ${err}`);
       response.sendText(res, 400, err.message);
-      // res.writeHead(400, { 'Content-Type': 'text/plain' });
-      // res.write('BIRD-ROUTE: Bad request');
-      // res.end();
       return undefined;
     }
     return undefined;
@@ -30,26 +24,47 @@ module.exports = function routeBird(router) {
 
   router.get('/api/v1/bird', (req, res) => {
     if (!req.url.query.id) {
-      response.sendText(res, 404, 'Your request requires an id');
-      // res.writeHead(400, { 'Content-Type': 'text/plain' });
-      // res.write('Your request requires an id');
-      // res.end();
+      response.sendText(res, 400, 'Your request requires an id');
       return undefined;
     }
     storage.fetchOne('Bird', req.url.query.id)
       .then((item) => {
         response.sendJSON(res, 200, item);
-        // res.writeHead(200, { 'Content-Type': 'application/json' });
-        // res.write(JSON.stringify(item));
-        // res.end();
         return undefined;
       })
       .catch((err) => {
         logger.log(logger.ERROR, err, JSON.stringify(err));
         response.sendText(res, 404, 'Resource not found');
-        // res.writeHead(404, { 'Content-Type': 'text/plain' });
-        // res.write('Resource not found');
-        // res.end();
+        return undefined;
+      });
+    return undefined;
+  });
+  router.delete('/api/v1/bird', (req, res) => {
+    if (!req.url.query.id) {
+      response.sendText(res, 400, 'Your request requires an id');
+      return undefined;
+    }
+    storage.deleteOne('Bird', req.url.query.id)
+      .then(() => {
+        response.sendText(res, 204);
+        return undefined;
+      })
+      .catch((err) => {
+        logger.log(logger.ERROR, err, JSON.stringify(err));
+        response.sendText(res, 404, 'Resource not found');
+        return undefined;
+      });
+    return undefined;
+  });
+  router.get('/api/v1/bird/ids', (req, res) => {
+    storage.fetchAll('Bird')
+      .then((items) => {
+        response.sendJSON(res, 200, items);
+        return undefined;
+      })
+      .catch((err) => {
+        logger.log(logger.ERROR, err, JSON.stringify(err));
+        response.sendText(res, 404, 'Resource not found');
         return undefined;
       });
     return undefined;

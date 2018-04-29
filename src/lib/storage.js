@@ -23,10 +23,11 @@ storage.fetchOne = function fetchOne(schema, id) {
   if (!schema) return Promise.reject(new Error('Expected schema name.'));
   if (!id) return Promise.reject(new Error('Expected ID.'));
 
+
   return fs.readFileProm(`${__dirname}/../data/${schema}/${id}.json`)
     .then((data) => {
       try {
-        const item = JSON.pars(data.toString());
+        const item = JSON.parse(data.toString());
         return item;
       } catch (err) {
         return Promise.reject(err);
@@ -36,16 +37,31 @@ storage.fetchOne = function fetchOne(schema, id) {
       logger.log(logger.ERROR, JSON.stringify(err));
     });
 };
-
-
-storage.fetchAll = function fetchAll() {
-
+storage.deleteOne = function deleteOne(schema, id) {
+  if (!schema) return Promise.reject(new Error('Expected schema name.'));
+  if (!id) return Promise.reject(new Error('Expected ID.'));
+  return fs.unlinkProm(`${__dirname}/../data/${schema}/${id}.json`)
+    .then(() => {
+      logger.log(logger.INFO, 'STORAGE: Deleted a resource.');
+    })
+    .catch((err) => {
+      Promise.reject(err);
+      logger.log(logger.ERROR, JSON.stringify(err));
+    });
 };
-
-storage.update = function update() {
-
-};
-
-storage.delete = function del() {
-
+storage.fetchAll = function fetchAll(schemaArg) {
+  // use Bird schema if none was specified.
+  let schema = 'Bird';
+  if (schemaArg) schema = schemaArg;
+  return fs.readdirProm(`${__dirname}/../data/${schema}/`)
+    .then((fileNames) => {
+      try {
+        return fileNames;
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    })
+    .catch((err) => {
+      logger.log(logger.ERROR, JSON.stringify(err));
+    });
 };

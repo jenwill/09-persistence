@@ -1,29 +1,38 @@
 ![cf](https://i.imgur.com/7v5ASc8.png) Lab 09: Vanilla REST API w/ Persistence
 ======
 
-## Submission Instructions
-  * fork this repository & create a new branch for your work
-  * push to your repository
-  * submit a pull request to this repository
-  * submit a link to your PR in canvas
-  * write a question and observation on canvas
+**Author:** Jennifer Piper
 
-## Learning Objectives  
-* students will learn how to save resource data to the file system for a layer of data persistence
-* students will learn how to refactor commonly used coding constructs into custom helper modules
+This is a very simple REST API, to store and retrieve info about birds. It will store in the file system: name, type, and info for each item
 
-## Requirements
+## Getting Started
+In a node.js environment, from the root of this repo, enter these commands to start the server on port 3000:
+* npm i
+* npm start
 
-#### Configuration
-* Reference the file structure of [this template](https://github.com/codefellows/seattle-javascript-401d23/tree/master/back-end/00-empty-template) for the configuration files you need and folder structure
-* `README.md`
-  * your `README.md` should include detailed instructions on how to use your API
-  * this should include documentation on how to access your API endpoints
+## API Endpoints
 
-#### Feature Tasks
-* continue working on your vanilla REST API
-* refactor your routes to be contained in a separate module (ex: `route/resource-route.js`)
-* refactor your `res` messages & status codes to be contained in a separate module (ex: `response.js`)
-* refactor the `storage.js` module to use file system persistence
-  * use the `fs` module to create and read the associated data files
-  * the name of the file should contain the related resource id
+* To create a new bird resource:
+ ```
+ http POST :3000/api/v1/bird name=birdname type=birdtype info='extra info about this bird'
+ ```
+ This will return a JSON object including a newly-generated id which can be used to retrieve that resource.
+ 
+ 
+ * To retrieve an array of all stored resource ids: 
+ ```
+ http GET :3000/api/v1/bird/ids
+ ```
+ 
+ 
+* To retrieve a resource by id, for example if id is '1234-5678':
+```
+http GET :3000/api/v1/bird?id=1234-5678
+```
+
+
+* To delete a resource by id, for example if id is '1234-5678':
+```
+http DELETE :3000/api/v1/bird?id=1234-5678
+```
+This will return with status code 204 and no message, as specified in the lab instructions. 
