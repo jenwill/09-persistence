@@ -79,6 +79,14 @@ describe('VALID request to the API', () => {
         });
     });
   });
+  describe('DELETE /api/v1/bird?id', () => {
+    it('should respond with status 204.', () => {
+      return superagent.delete(`:${testPort}/api/v1/bird?id=${mockId}`)
+        .then((res) => {
+          expect(res.status).toEqual(204);
+        });
+    });
+  });
 });
 describe('INVALID request to the API', () => {
   describe('/api/v1/nrkreisldkfe', () => {

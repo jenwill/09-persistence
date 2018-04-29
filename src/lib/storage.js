@@ -37,6 +37,18 @@ storage.fetchOne = function fetchOne(schema, id) {
       logger.log(logger.ERROR, JSON.stringify(err));
     });
 };
+storage.deleteOne = function deleteOne(schema, id) {
+  if (!schema) return Promise.reject(new Error('Expected schema name.'));
+  if (!id) return Promise.reject(new Error('Expected ID.'));
+  return fs.unlinkProm(`${__dirname}/../data/${schema}/${id}.json`)
+    .then(() => {
+      logger.log(logger.INFO, 'STORAGE: Deleted a resource.');
+    })
+    .catch((err) => {
+      Promise.reject(err);
+      logger.log(logger.ERROR, JSON.stringify(err));
+    });
+};
 storage.fetchAll = function fetchAll(schemaArg) {
   // use Bird schema if none was specified.
   let schema = 'Bird';
