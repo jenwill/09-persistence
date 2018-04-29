@@ -29,19 +29,17 @@ module.exports = function routeBird(router) {
   });
 
   router.get('/api/v1/bird', (req, res) => {
+    console.log(req.url.query.id, 'BIRD-ROUTE: .GET');
     if (!req.url.query.id) {
       response.sendText(res, 404, 'Your request requires an id');
-      // res.writeHead(400, { 'Content-Type': 'text/plain' });
-      // res.write('Your request requires an id');
-      // res.end();
       return undefined;
     }
     storage.fetchOne('Bird', req.url.query.id)
       .then((item) => {
-        response.sendJSON(res, 200, item);
-        // res.writeHead(200, { 'Content-Type': 'application/json' });
-        // res.write(JSON.stringify(item));
-        // res.end();
+        // response.sendJSON(res, 200, item);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.write(JSON.stringify(item));
+        res.end();
         return undefined;
       })
       .catch((err) => {

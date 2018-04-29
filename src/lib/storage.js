@@ -27,7 +27,7 @@ storage.fetchOne = function fetchOne(schema, id) {
   return fs.readFileProm(`${__dirname}/../data/${schema}/${id}.json`)
     .then((data) => {
       try {
-        const item = JSON.pars(data.toString());
+        const item = JSON.parse(data.toString());
         return item;
       } catch (err) {
         return Promise.reject(err);
@@ -35,6 +35,7 @@ storage.fetchOne = function fetchOne(schema, id) {
     })
     .catch((err) => {
       logger.log(logger.ERROR, JSON.stringify(err));
+      console.log(err, 'STORAGE: ERR');
     });
 };
 
