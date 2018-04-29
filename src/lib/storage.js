@@ -37,22 +37,19 @@ storage.fetchOne = function fetchOne(schema, id) {
       logger.log(logger.ERROR, JSON.stringify(err));
     });
 };
-
-
-// storage.fetchAll = function fetchAll(schema) {
-//   return fs.readdirProm('needs some argument in here, read docs')
-//     .then((something) => {
-//       // do logic on 'something'
-//     }).catch((err) => {
-//       // logic with error
-//     });
-// };
-
-
-storage.update = function update() {
-
-};
-
-storage.delete = function del() {
-
+storage.fetchAll = function fetchAll(schemaArg) {
+  // use Bird schema if none was specified.
+  let schema = 'Bird';
+  if (schemaArg) schema = schemaArg;
+  return fs.readdirProm(`${__dirname}/../data/${schema}/`)
+    .then((fileNames) => {
+      try {
+        return fileNames;
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    })
+    .catch((err) => {
+      logger.log(logger.ERROR, JSON.stringify(err));
+    });
 };

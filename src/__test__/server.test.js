@@ -71,23 +71,14 @@ describe('VALID request to the API', () => {
         });
     });
   });
-//   describe('GET /api/v1/allbirds', () => {
-//     it('should respond with status 200.', () => {
-//       return superagent.get(`:${testPort}/api/v1/allbirds`)
-//         .then((res) => {
-//           expect(res.status).toEqual(200);
-//         });
-//     });
-//   });
-//   describe('GET /api/v1/birds/ids', () => {
-//     it('should respond with status 200 and array of ids', () => {
-//       return superagent.get(`:${testPort}/api/v1/bird/ids`)
-//         .then((res) => {
-//           expect(res.status).toEqual(200);
-//           // expect(res.body).toEqual([`${mockId}`]);
-//         });
-//     });
-//   });
+  describe('GET /api/v1/birds/ids', () => {
+    it('should respond with status 200', () => {
+      return superagent.get(`:${testPort}/api/v1/bird/ids`)
+        .then((res) => {
+          expect(res.status).toEqual(200);
+        });
+    });
+  });
 });
 describe('INVALID request to the API', () => {
   describe('/api/v1/nrkreisldkfe', () => {
