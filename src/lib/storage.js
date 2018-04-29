@@ -35,7 +35,6 @@ storage.fetchOne = function fetchOne(schema, id) {
     })
     .catch((err) => {
       logger.log(logger.ERROR, JSON.stringify(err));
-      console.log(err, 'STORAGE: ERR');
     });
 };
 

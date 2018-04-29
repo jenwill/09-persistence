@@ -3,6 +3,7 @@
 const logger = require('./logger');
 const bodyParser = require('./body-parser');
 const urlParser = require('./url-parser');
+const response = require('./response');
 
 // This is a baby version of what Express does.
 const Router = module.exports = function router() {
@@ -41,22 +42,15 @@ Router.prototype.route = function route() {
           this.routes[req.method][req.url.pathname](req, res);
           return;
         }
-
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.write('ROUTER .THEN: Route not found');
-        res.end();
+        response.sendText(res, 404, 'Route not found');
       })
       .catch((err) => {
         if (err instanceof SyntaxError) {
-          res.writeHead(404, { 'Content-Type': 'text/plain' });
-          res.write('ROUTER .CATCH: Route not found');
-          res.end();
+          response.sendText(res, 404, 'Route not found');
           return undefined;
         }
         logger.log(logger.ERROR, JSON.stringify(err));
-        res.writeHead(400, { 'Content-Type': 'text/plain' });
-        res.write('ROUTER .CATCH: Bad Request');
-        res.end();
+        response.sendText(res, 400, 'Bad Request');
         return undefined;
       });
   };

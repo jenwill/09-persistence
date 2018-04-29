@@ -49,6 +49,15 @@ describe('VALID request to the API', () => {
           expect(res.status).toEqual(200);
         });
     });
+    it('should respond with status 200 and the requested bird from file storage.', () => {
+      return superagent.get(`:${testPort}/api/v1/bird?id=0ab77629-a6d5-44ac-9780-2c37f3cb4b89`)
+        .then((res) => {
+          expect(res.body.name).toEqual('turkey');
+          expect(res.body.type).toEqual('flappy');
+          expect(res.body.info).toEqual('Big. Yummy.');
+          expect(res.status).toEqual(200);
+        });
+    });
     it('should respond with status 404 when an invalid id is requested.', () => {
       return superagent.get(`:${testPort}/api/v1/bird?id=1234`)
         .catch((res) => {
@@ -62,23 +71,23 @@ describe('VALID request to the API', () => {
         });
     });
   });
-  describe('GET /api/v1/allbirds', () => {
-    it('should respond with status 200.', () => {
-      return superagent.get(`:${testPort}/api/v1/allbirds`)
-        .then((res) => {
-          expect(res.status).toEqual(200);
-        });
-    });
-  });
-  describe('GET /api/v1/birds/ids', () => {
-    it('should respond with status 200 and array of ids', () => {
-      return superagent.get(`:${testPort}/api/v1/bird/ids`)
-        .then((res) => {
-          expect(res.status).toEqual(200);
-          // expect(res.body).toEqual([`${mockId}`]);
-        });
-    });
-  });
+//   describe('GET /api/v1/allbirds', () => {
+//     it('should respond with status 200.', () => {
+//       return superagent.get(`:${testPort}/api/v1/allbirds`)
+//         .then((res) => {
+//           expect(res.status).toEqual(200);
+//         });
+//     });
+//   });
+//   describe('GET /api/v1/birds/ids', () => {
+//     it('should respond with status 200 and array of ids', () => {
+//       return superagent.get(`:${testPort}/api/v1/bird/ids`)
+//         .then((res) => {
+//           expect(res.status).toEqual(200);
+//           // expect(res.body).toEqual([`${mockId}`]);
+//         });
+//     });
+//   });
 });
 describe('INVALID request to the API', () => {
   describe('/api/v1/nrkreisldkfe', () => {
