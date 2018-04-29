@@ -41,22 +41,17 @@ module.exports = function routeBird(router) {
   });
   router.delete('/api/v1/bird', (req, res) => {
     if (!req.url.query.id) {
-      res.writeHead(400, { 'Content-Type': 'text/plain' });
-      res.write('Your request requires an id');
-      res.end();
+      response.sendText(res, 400, 'Your request requires an id');
       return undefined;
     }
     storage.deleteOne('Bird', req.url.query.id)
       .then(() => {
-        res.writeHead(204, { 'Content-Type': 'text/plain' });
-        res.end();
+        response.sendText(res, 204);
         return undefined;
       })
       .catch((err) => {
         logger.log(logger.ERROR, err, JSON.stringify(err));
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.write('Resource not found');
-        res.end();
+        response.sendText(res, 404, 'Resource not found');
         return undefined;
       });
     return undefined;
